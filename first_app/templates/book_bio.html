@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Favorite Books</title>
+</head>
+<body>
+	<div id="header">
+		<div id="" class="header"><h1>Welcome {{user_in_session.first_name}} {{user_in_session.last_name}}</h1></div>	
+		<div id="logout" class="header"><a href="/logout">Log Out</a></div>
+	</div>
+		<h1>{{book.title}}</h1>
+		<p>Added by: {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}}</p>
+		<p>Added on: {{book.uploaded_by.created_at}}</p>
+		<p>Last Updated on: {{book.uploaded_by.updated_at}}</p>
+		
+		{% if book.uploaded_by.id != request.session.User %}
+		Description: {{book.description}}
+		
+		{% else %}
+		
+		<label for="description">Description</label>
+		<form action="/books/{{book.id}}/edit" method="POST">
+			{% csrf_token %}
+		<textarea name="description" cols="40" rows="5">{{book.description}}</textarea><br>
+		<input type="submit" value="Update">
+		</form>
+		<a href="{% url 'delete' book_id=book.id %}">
+		<input type="submit" value="Delete"></a>
+		{% endif %}
+	<div id="liked_by">
+		<h1>Users who like {{book.title}}</h1>
+		<ul>
+  			{% for favorite in book.users_who_like.all %}
+  			<li>{{favorite.first_name}} {{favorite.last_name}}</li><br>
+  			{% endfor %}
+  		</ul>
+  		
+  		{% if user_in_session in book.users_who_like.all %}
+  			<a href="{% url 'remove_fav' book_id=book.id %}">Remove from Favorites</a>
+  			{% else %}
+  			<a href="{% url 'add_favorites' book_id=book.id %}">Add To Favorites</a>
+  			{% endif %}
+
+
+</body>
+</html>

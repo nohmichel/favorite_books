@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Favorite Books</title>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'css/book_style.css' %}"> 	
+</head>
+<body>
+	<div id="header">
+		<div id="" class="header"><h1>Welcome {{logged_User.first_name}} {{logged_User.last_name}}</h1></div>	
+		<div id="logout" class="header"><a href="/logout">Log Out</a></div>
+	</div>
+	
+	<div id="wrapper">
+		<div id="add_book">
+			<h1>Add a Favorite Book</h1>
+			{% for message in messages %}<br>
+			{{message}}<br>
+				{% endfor %}<br>
+			<form action="/add_book" method="POST">
+				{% csrf_token %}
+				<label for="title">Title</label>
+				<input type="text" name="title"><br>
+				<label for="description" name="description">Description</lafbel>
+				<textarea name="description"></textarea><br>
+				<input type="submit" id="add_bttn" value="add_book">
+			</form>
+		</div>	
+		<div id="all_books">
+			<h1>All Books</h1>
+			<div id="book_list">
+				{% for one_book in all_books %}
+					{% if logged_User not in one_book.users_who_like.all %}
+					<h3><a href="{% url 'book_bio' book_id=one_book.id %}">{{one_book.title}}</a></h3><br>
+					<p>(added by {{one_book.uploaded_by.first_name}} {{one_book.uploaded_by.last_name}})</p>
+					<a href="{% url 'add_favorites' book_id=one_book.id %}">Add To Favorites</a><br>
+					{% endif %}
+					{% endfor %}
+
+					
+				{% for one_book in all_books %}	
+					{% if logged_User in one_book.users_who_like.all %}
+					<h3><a href="{% url 'book_bio' book_id=one_book.id %}">{{one_book.title}}</a></h3><br>
+					<p>(added by {{one_book.uploaded_by.first_name}} {{one_book.uploaded_by.last_name}})</p>
+					<p>this is one of your favorites</p><br>	
+					{% endif %}
+					{% endfor %}
+			</div>
+		</div>			
+	</div>
+</body>
+</html>
+
+
+			

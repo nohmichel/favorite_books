@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Registration</title>
+</head>
+<body>
+	<div id="registration">
+		<form action="/create_user" method="POST">
+			{% csrf_token %}
+		<h1>Register</h1>
+		{% for message in messages %}
+		{{message}}</form><br>
+		{% endfor %}
+		First Name: <input name="first_name" type="text"><br>
+		Last Name: <input name="last_name" type="text"><br>
+		Email: <input name="email" type="email"><br>
+		Password: <input name="password" type="password"><br>
+		Confirm PW: <input name="confirmPassword" type="password"><br>
+		<input type="submit" id="button" value="Register" name="reg_button"><br>
+		</form>
+	</div>
+	<div id="login">
+		<form action="/login" method="POST">
+			{% csrf_token %}	
+		<h1>Login</h1>
+		Email: <input name="login_email" type="text"><br>
+		Password: <input name="login_pass" type="password"><br>
+		<input type="submit" id="button" value="Register" name="reg_button"><br>
+		</form>
+	</div>
+	
+</body>
+</html>
